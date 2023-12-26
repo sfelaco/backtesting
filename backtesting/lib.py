@@ -90,10 +90,11 @@ def cross(series1: Sequence, series2: Sequence) -> bool:
     return crossover(series1, series2) or crossover(series2, series1)
 
 
-def crossover(series1: Sequence, series2: Sequence) -> bool:
+
+def crossover(series1: Sequence, series2: Sequence, series3: Sequence = []) -> bool:
     """
     Return `True` if `series1` just crossed over (above)
-    `series2`.
+    `series2` and `series3`
 
         >>> crossover(self.data.Close, self.sma)
         True
@@ -106,11 +107,19 @@ def crossover(series1: Sequence, series2: Sequence) -> bool:
         series2.values if isinstance(series2, pd.Series) else
         (series2, series2) if isinstance(series2, Number) else
         series2)
+    if series3:
+        series3 = (
+            series3.values if isinstance(series3, pd.Series) else
+            (series3, series3) if isinstance(series3, Number) else
+            series3)
     try:
-        return series1[-2] < series2[-2] and series1[-1] > series2[-1]
+        if series3:
+            return series1[-2] < series2[-2] and series1[-2] < series3[-2] and series1[-1] > series2[-1] and series1[-1] > series3[-1]
+        else:
+            return series1[-2] < series2[-2] and series1[-1] > series2[-1]
+
     except IndexError:
         return False
-
 
 def plot_heatmaps(heatmap: pd.Series,
                   agg: Union[str, Callable] = 'max',
