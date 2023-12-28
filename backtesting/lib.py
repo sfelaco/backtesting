@@ -91,7 +91,29 @@ def cross(series1: Sequence, series2: Sequence) -> bool:
 
 
 
-def crossover(series1: Sequence, series2: Sequence, series3: Sequence = []) -> bool:
+def crossover(series1: Sequence, series2: Sequence) -> bool:
+    """
+    Return `True` if `series1` just crossed over (above)
+    `series2` 
+
+        >>> crossover(self.data.Close, self.sma)
+        True
+    """
+    series1 = (
+        series1.values if isinstance(series1, pd.Series) else
+        (series1, series1) if isinstance(series1, Number) else
+        series1)
+    series2 = (
+        series2.values if isinstance(series2, pd.Series) else
+        (series2, series2) if isinstance(series2, Number) else
+        series2)
+
+    try:
+        return series1[-2] < series2[-2] and series1[-1] > series2[-1]
+    except IndexError:
+        return False
+    
+def crossover3(series1: Sequence, series2: Sequence, series3: Sequence = []) -> bool:
     """
     Return `True` if `series1` just crossed over (above)
     `series2` and `series3`
@@ -107,19 +129,16 @@ def crossover(series1: Sequence, series2: Sequence, series3: Sequence = []) -> b
         series2.values if isinstance(series2, pd.Series) else
         (series2, series2) if isinstance(series2, Number) else
         series2)
-    if series3:
-        series3 = (
-            series3.values if isinstance(series3, pd.Series) else
-            (series3, series3) if isinstance(series3, Number) else
-            series3)
+    series3 = (
+        series3.values if isinstance(series3, pd.Series) else
+        (series3, series3) if isinstance(series3, Number) else
+        series3)
     try:
-        if series3:
-            return series1[-2] < series2[-2] and series1[-2] < series3[-2] and series1[-1] > series2[-1] and series1[-1] > series3[-1]
-        else:
-            return series1[-2] < series2[-2] and series1[-1] > series2[-1]
+        return series1[-2] < series2[-2] and series1[-1] > series2[-1] and series2[-1] > series3[-1]
+
 
     except IndexError:
-        return False
+        return False    
 
 def plot_heatmaps(heatmap: pd.Series,
                   agg: Union[str, Callable] = 'max',
