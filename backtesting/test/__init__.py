@@ -15,6 +15,11 @@ GOOG = _read_file('GOOG.csv')
 EURUSD = _read_file('EURUSD.csv')
 """DataFrame of hourly EUR/USD forex data from April 2017 to February 2018."""
 
+DE40_2D_5M =  _read_file('DE40_2d_5m.csv')
+"""DataFrame of 5M DE40 index data from 19 Dec 2023 to 20 Dec 2023."""
+
+DE40_5Y_5M =  _read_file('DE40_5y_5m.csv')
+"""DataFrame of 5M DE40 index data from 20 Dec 2022 to 20 Dec 2023."""
 
 def SMA(arr: pd.Series, n: int) -> pd.Series:
     """
