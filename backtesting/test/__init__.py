@@ -1,6 +1,6 @@
 """Data and utilities for testing."""
 import pandas as pd
-
+import talib
 
 def _read_file(filename):
     from os.path import dirname, join
@@ -29,3 +29,6 @@ def SMA(arr: pd.Series, n: int) -> pd.Series:
     Returns `n`-period simple moving average of array `arr`.
     """
     return pd.Series(arr).rolling(n).mean()
+
+def RSI(arr: pd.Series, period : int):
+    return  talib.RSI(arr, timeperiod=period)
